@@ -1,6 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <string>
 class Bluetooth {
   public:
-    int scan(void);
+    std::vector<std::pair<std::string, std::string>> scan(void);
 };

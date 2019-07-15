@@ -7,8 +7,10 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
+#include <vector>
+#include <string>
 
-int Bluetooth::scan(void)
+std::vector<std::pair<std::string, std::string>> Bluetooth::scan(void)
 {
     inquiry_info *ii = NULL;
     int max_rsp, num_rsp;
@@ -32,16 +34,19 @@ int Bluetooth::scan(void)
     num_rsp = hci_inquiry(dev_id, len, max_rsp, NULL, &ii, flags);
     if( num_rsp < 0 ) perror("hci_inquiry");
 
+    std::vector<std::pair<std::string, std::string>> devices;
     for (i = 0; i < num_rsp; i++) {
         ba2str(&(ii+i)->bdaddr, addr);
         memset(name, 0, sizeof(name));
         if (hci_read_remote_name(sock, &(ii+i)->bdaddr, sizeof(name),
             name, 0) < 0)
         strcpy(name, "[unknown]");
-        printf("%s  %s\n", addr, name);
+        devices.push_back(std::make_pair<std::string, std::string>(addr, name));
+        //printf("%s  %s\n", addr, name);
+
     }
 
     free( ii );
     close( sock );
-    return 0;
+    return devices;
 }
