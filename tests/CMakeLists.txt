@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(time-logger-test)
 include(GoogleTest)
-find_package(GTest REQUIRED)
 enable_testing()
 #SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 #SET(CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build)
@@ -37,7 +36,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp
 
 add_executable(${PROJECT_NAME} ${SRC_FILES} ${TEST_SRC_FILES})
 
-target_link_libraries(${PROJECT_NAME} GTest::Main GTest::GTest gcov sqlite3)
+target_link_libraries(${PROJECT_NAME} gtest gtest_main gcov sqlite3)
 
 gtest_discover_tests(${PROJECT_NAME})
 
