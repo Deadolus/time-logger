@@ -4,13 +4,26 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <functional>
 #include <sqlite3.h>
 
-typedef std::pair<std::string, std::string> DatabaseEntry;
+std::vector<DatabaseCallback> Sqlite::sqlCallbacks_{};
 namespace {
 
 }
 
+bool Sqlite::execute_sql(std::string& sql, DatabaseCallback& callback) {
+  char* zErrMsg{nullptr};
+  sqlCallbacks_.emplace_back(callback);
+  int rc = sqlite3_exec(db,sql.c_str(),Sqlite::sqlCallback, reinterpret_cast<void*>(sqlCallbacks_.size()-1), &zErrMsg);
+  //int rc = sqlite3_exec(db,sql.c_str(),Sqlite::sqlCallback, reinterpret_cast<void*>(callback), &zErrMsg);
+  if( rc != SQLITE_OK ){
+    std::cerr << "Can't execute command, error: " << zErrMsg;
+    sqlite3_free(zErrMsg);
+    return false;
+  }
+  return true;
+}
 bool Sqlite::execute_sql(std::string& sql, sqlite3_callback callback, void* data) {
   char* zErrMsg{nullptr};
   int rc = sqlite3_exec(db,sql.c_str(),callback, data, &zErrMsg);
@@ -39,6 +52,7 @@ bool Sqlite::init(std::string name) {
   std::string sql = R"(
 CREATE TABLE IF NOT EXISTS devicelog (
  id INTEGER PRIMARY KEY AUTOINCREMENT,
+ timestamp  DATETIME default current_timestamp,
  device TEXT NOT NULL,
  deviceName TEXT NOT NULL
       );
@@ -60,7 +74,7 @@ bool Sqlite::insert(std::vector<std::string> data) {
   return execute_sql(sqlstr);
 }
 
-bool Sqlite::select(std::string sql, sqlite3_callback callback) {
+bool Sqlite::select(std::string sql, DatabaseCallback callback) {
   return execute_sql(sql, callback);
 }
 
@@ -69,7 +83,7 @@ bool Sqlite::executeSql(std::string& string) {
 }
 
 int Sqlite::sqlCallback(void *data, int argc, char **argv, char **azColName){
-    //Sqlite* instance = static_cast<Sqlite*>(data);
+    size_t callbackNr = reinterpret_cast<size_t>(data);
     std::vector<DatabaseEntry> values;
 
     for(int i{0}; i<argc; i++){
@@ -77,8 +91,7 @@ int Sqlite::sqlCallback(void *data, int argc, char **argv, char **azColName){
       std::string value = argv[i] ? argv[i] : "NULL";
       values.push_back(std::make_pair(columnName, value));
     }
-    for(auto& entry : values) {
-      std::cout << entry.first << "," << entry.second << std::endl;
-    }
+      sqlCallbacks_.at(callbackNr)(values);
+      sqlCallbacks_.erase(sqlCallbacks_.begin() + callbackNr);
     return 0;
   }

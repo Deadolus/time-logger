@@ -42,11 +42,29 @@ TEST_F(SqliteTest, count_is_correct_after_insert)
 {
   std::vector<std::string> value{"00x00", "device"};
   std::string sql = "SELECT * FROM devicelog;";
+  DatabaseCallback cb = [](std::vector<DatabaseEntry>& entries){
+    EXPECT_EQ(entries.size(), 4);
+  };
     EXPECT_TRUE(sqlite.init());
     EXPECT_TRUE(sqlite.insert(value));
-    EXPECT_TRUE(sqlite.select(sql));
+    EXPECT_TRUE(sqlite.select(sql, cb));
 }
 
+TEST_F(SqliteTest, entry_is_correct_after_insert)
+{
+  std::vector<std::string> value{"00x00", "device"};
+  std::string sql = "SELECT * FROM devicelog;";
+  DatabaseCallback cb = [](std::vector<DatabaseEntry>& entries){
+    //for(auto& entry : entries) { std::cout << entry.first << "/"<<entry.second << std::endl; }
+    EXPECT_EQ(entries[0].second, "1");
+    //entries[1] is datetime and thus variable
+    EXPECT_EQ(entries[2].second, "00x00");
+    EXPECT_EQ(entries[3].second, "device");
+  };
+    sqlite.init();
+    sqlite.insert(value);
+    sqlite.select(sql, cb);
+}
 
 
 
