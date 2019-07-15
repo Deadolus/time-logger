@@ -1,1 +1,2 @@
 language: cpp
+install: cmake make libbluetooth-dev libbluetooth libsqlite3-0 libsqlite3-dev
