@@ -1,6 +1,6 @@
 language: cpp
 install:
-  - sudo apt -y install cmake make libbluetooth-dev libbluetooth-dev libsqlite3-0 libsqlite3-dev
+  - sudo apt -y install libbluetooth-dev libbluetooth-dev libsqlite3-0 libsqlite3-dev
 script:
   - mkdir build
   - cd build
