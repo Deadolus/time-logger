@@ -41,9 +41,10 @@ TEST_F(SqliteTest, can_insert_values)
 TEST_F(SqliteTest, count_is_correct_after_insert)
 {
   std::vector<std::string> value{"00x00", "device"};
+  std::string sql = "SELECT * FROM devicelog;";
     EXPECT_TRUE(sqlite.init());
     EXPECT_TRUE(sqlite.insert(value));
-    EXPECT_TRUE(sqlite.select(value[0]));
+    EXPECT_TRUE(sqlite.select(sql));
 }
 
 

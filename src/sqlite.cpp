@@ -6,20 +6,8 @@
 #include <sstream>
 #include <sqlite3.h>
 
+typedef std::pair<std::string, std::string> DatabaseEntry;
 namespace {
-  static int sqlCallback(void *data, int argc, char **argv, char **azColName){
-    Sqlite* instance = static_cast<Sqlite*>(data);
-    //fprintf(stderr, "%s: ", (const char*)data);
-    std::vector<std::string> values;
-
-    for(int i{0}; i<argc; i++){
-      //printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-      values.push_back(argv[i] ? argv[i] : "NULL");
-    }
-    //instance->gatherData(values);
-
-    return 0;
-  }
 
 }
 
@@ -72,17 +60,25 @@ bool Sqlite::insert(std::vector<std::string> data) {
   return execute_sql(sqlstr);
 }
 
-bool Sqlite::select(std::string /*sql*/) {
-  std::string sql = R"(
-      SELECT * from devicelog
-      )";
-  return execute_sql(sql, sqlCallback);
+bool Sqlite::select(std::string sql, sqlite3_callback callback) {
+  return execute_sql(sql, callback);
 }
 
 bool Sqlite::executeSql(std::string& string) {
   return execute_sql(string);
 }
 
-void Sqlite::gatherData(std::vector<std::string> data) {
+int Sqlite::sqlCallback(void *data, int argc, char **argv, char **azColName){
+    //Sqlite* instance = static_cast<Sqlite*>(data);
+    std::vector<DatabaseEntry> values;
 
-}
+    for(int i{0}; i<argc; i++){
+      std::string columnName = azColName[i];
+      std::string value = argv[i] ? argv[i] : "NULL";
+      values.push_back(std::make_pair(columnName, value));
+    }
+    for(auto& entry : values) {
+      std::cout << entry.first << "," << entry.second << std::endl;
+    }
+    return 0;
+  }
