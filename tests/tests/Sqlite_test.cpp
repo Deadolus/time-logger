@@ -2,40 +2,62 @@
 #include "sqlite.h"
 
 #include <string>
+#include <cstdio>
 
+namespace {
+  class UniqueDatabase {
+    public:
+      UniqueDatabase() {
+        int i{0};
+        std::string name{};
+        std::array<char, L_tmpnam> tempName;
+        tmpnam(tempName.data());
+        name = std::string(tempName.data()) +std::string(".db");
+        name_ = name;
+        std::cout << "My new database name:" << name_ << std::endl;
+      }
+      ~UniqueDatabase() {system(std::string("rm ").append(name_).c_str());}
+      std::string getName() { return name_;}
+    private:
+      std::string name_;
+  };
+} // end anonymous namespace
 
 class SqliteTest : public ::testing::Test
 {
-    protected:
-      Sqlite sqlite{};
-      void SetUp() override {
-        EXPECT_TRUE(sqlite.open("testdatabase.db"));
-      }
+  protected:
+    Sqlite sqlite{};
+    void SetUp() override {
+      EXPECT_TRUE(sqlite.open(database.getName()));
+    }
 
-      void TearDown()  override {
-        std::string sql = "DROP TABLE devicelog;";
-        EXPECT_TRUE(sqlite.executeSql(sql));
-        EXPECT_TRUE(sqlite.close());
-      }
+    void TearDown()  override {
+      std::string sql = "DROP TABLE devicelog;";
+      EXPECT_TRUE(sqlite.executeSql(sql));
+      EXPECT_TRUE(sqlite.close());
+    }
+  private:
+    UniqueDatabase database;
 };
 
-TEST(SimpleSqliteTest, can_open_and_close_database)
+TEST(SqliteSimpleTest, can_open_and_close_database)
 {
   Sqlite sqlite{};
-  EXPECT_TRUE(sqlite.open("testdatabase.db"));
+  UniqueDatabase database;
+  EXPECT_TRUE(sqlite.open((database.getName())));
   EXPECT_TRUE(sqlite.close());
 }
 
 TEST_F(SqliteTest, can_init_database)
 {
-    EXPECT_TRUE(sqlite.init());
+  EXPECT_TRUE(sqlite.init());
 }
 
 TEST_F(SqliteTest, can_insert_values)
 {
   std::vector<std::string> value{"00x00", "device"};
-    EXPECT_TRUE(sqlite.init());
-    EXPECT_TRUE(sqlite.insert(value));
+  EXPECT_TRUE(sqlite.init());
+  EXPECT_TRUE(sqlite.insert(value));
 }
 
 TEST_F(SqliteTest, count_is_correct_after_insert)
@@ -45,9 +67,9 @@ TEST_F(SqliteTest, count_is_correct_after_insert)
   DatabaseCallback cb = [](std::vector<DatabaseEntry>& entries){
     EXPECT_EQ(entries.size(), 4);
   };
-    EXPECT_TRUE(sqlite.init());
-    EXPECT_TRUE(sqlite.insert(value));
-    EXPECT_TRUE(sqlite.select(sql, cb));
+  EXPECT_TRUE(sqlite.init());
+  EXPECT_TRUE(sqlite.insert(value));
+  EXPECT_TRUE(sqlite.select(sql, cb));
 }
 
 TEST_F(SqliteTest, entry_is_correct_after_insert)
@@ -61,9 +83,9 @@ TEST_F(SqliteTest, entry_is_correct_after_insert)
     EXPECT_EQ(entries[2].second, "00x00");
     EXPECT_EQ(entries[3].second, "device");
   };
-    sqlite.init();
-    sqlite.insert(value);
-    sqlite.select(sql, cb);
+  sqlite.init();
+  sqlite.insert(value);
+  sqlite.select(sql, cb);
 }
 
 
