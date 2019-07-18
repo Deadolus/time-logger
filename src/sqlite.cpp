@@ -8,9 +8,6 @@
 #include <sqlite3.h>
 
 std::vector<DatabaseCallback> Sqlite::sqlCallbacks_{};
-namespace {
-
-}
 
 bool Sqlite::execute_sql(const std::string& sql, DatabaseCallback callback) {
   static std::mutex databaseLock{};
