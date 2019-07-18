@@ -23,7 +23,7 @@ std::vector<std::pair<std::string, std::string>> Bluetooth::scan(void)
     sock = hci_open_dev( dev_id );
     if (dev_id < 0 || sock < 0) {
         perror("opening socket");
-        exit(1);
+        return devices;
     }
 
     len  = 8;
