@@ -5,6 +5,7 @@
 #include <vector>
 #include <sstream>
 #include <functional>
+#include <mutex>
 #include <sqlite3.h>
 
 std::vector<DatabaseCallback> Sqlite::sqlCallbacks_{};
