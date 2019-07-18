@@ -81,7 +81,8 @@ int Sqlite::sqlCallback(void *data, int argc, char **argv, char **azColName){
       std::string value = argv[i] ? argv[i] : "NULL";
       values.push_back(std::make_pair(columnName, value));
     }
-      sqlCallbacks_.at(callbackNr)(values);
-      sqlCallbacks_.erase(sqlCallbacks_.begin() + callbackNr);
+    auto callback = sqlCallbacks_.at(callbackNr);
+    if(callback) { callback(values);};
+    sqlCallbacks_.erase(sqlCallbacks_.begin() + callbackNr);
     return 0;
   }
