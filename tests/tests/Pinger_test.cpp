@@ -1,17 +1,17 @@
 #include "gtest/gtest.h"
-#include "bluetooth.h"
+#include "ping.h"
 
 #include <string>
 
 class PingerTest : public ::testing::Test
 {
     protected:
-      Bluetooth scanner{};
+      Pinger scanner{};
 };
 
-TEST(SimpleBluetoothTest, can_execute_scan)
+TEST(SimplePingerTest, can_execute_scan)
 {
-  Bluetooth scanner{};
+  Pinger scanner{};
   EXPECT_GE(scanner.scan().size(), 0);
 }
 
