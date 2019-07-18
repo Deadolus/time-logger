@@ -10,11 +10,3 @@ enable_testing()
 
 add_subdirectory(src)
 add_subdirectory(tests)
-
-
-
-#add_executable(${CMAKE_PROJECT_NAME} ${SRC_FILES} )
-#target_link_libraries(${CMAKE_PROJECT_NAME} sqlite3)
-
-
-
