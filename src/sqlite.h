@@ -20,6 +20,7 @@ class Sqlite {
       static int sqlCallback(void *data, int argc, char **argv, char **azColName);
     bool execute_sql(const std::string& sql, DatabaseCallback callback = {});
     sqlite3 *db;
+    std::string databaseName_;
     static std::vector<DatabaseCallback> sqlCallbacks_;
 
     };

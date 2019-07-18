@@ -18,7 +18,7 @@ bool Sqlite::execute_sql(const std::string& sql, DatabaseCallback callback) {
 
   int rc = sqlite3_exec(db,sql.c_str(),Sqlite::sqlCallback, reinterpret_cast<void*>(sqlCallbacks_.size()-1), &zErrMsg);
   if( rc != SQLITE_OK ){
-    std::cerr << "Can't execute command, error: " << zErrMsg;
+    std::cerr << "Can't execute command on database " << databaseName_ << ", error: " << zErrMsg;
     sqlite3_free(zErrMsg);
     return false;
   }
@@ -29,10 +29,11 @@ bool Sqlite::open(const std::string name) {
   char *zErrMsg = 0;
   int rc;
 
+  databaseName_ = name;
   rc = sqlite3_open(name.c_str(), &db);
 
   if( rc ) {
-    std::cerr << "Can't open database: " << zErrMsg;
+    std::cerr << "Can't open database with name" << name << ": " << zErrMsg;
     return false;
   }
   return true;
