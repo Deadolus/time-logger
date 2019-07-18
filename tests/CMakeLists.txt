@@ -29,14 +29,18 @@ ${CMAKE_CURRENT_SOURCE_DIR}/helpers
 
 include_directories(${GTEST_INCLUDE_DIRS} ${COMMON_INCLUDES} ${TEST_INCLUDES})
 
-file(GLOB SRC_FILES ../src/sqlite.cpp)
+file(GLOB SRC_FILES
+  ../src/sqlite.cpp
+  ../src/ping.cpp
+  ../src/bluetooth.cpp
+  )
 file(GLOB TEST_SRC_FILES
 ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC_FILES} ${TEST_SRC_FILES})
 
-target_link_libraries(${PROJECT_NAME} gtest gtest_main gcov sqlite3)
+target_link_libraries(${PROJECT_NAME} gtest gtest_main gcov sqlite3 bluetooth fmt)
 
 gtest_discover_tests(${PROJECT_NAME})
 
@@ -56,4 +60,33 @@ FetchContent_GetProperties(googletest)
 if(NOT googletest_POPULATED)
   FetchContent_Populate(googletest)
   add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+endif()
+
+#-------------------------------------------
+
+#fmt.dev
+include(FetchContent)
+
+FetchContent_Declare(
+  fmtlib
+  GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+  GIT_TAG        master
+)
+
+FetchContent_GetProperties(fmtlib)
+if(NOT fmtlib_POPULATED)
+  FetchContent_Populate(fmtlib)
+  add_subdirectory(${fmtlib_SOURCE_DIR} ${fmtlib_BINARY_DIR})
+endif()
+
+FetchContent_Declare(
+  pstreams
+  GIT_REPOSITORY git://git.code.sf.net/p/pstreams/code
+  GIT_TAG        master
+)
+
+FetchContent_GetProperties(pstreams)
+if(NOT pstreams_POPULATED)
+  FetchContent_Populate(pstreams)
+  include_directories(${pstreams_SOURCE_DIR})
 endif()
