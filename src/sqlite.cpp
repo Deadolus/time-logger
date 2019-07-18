@@ -12,21 +12,13 @@ namespace {
 
 }
 
-bool Sqlite::execute_sql(std::string& sql, DatabaseCallback& callback) {
+bool Sqlite::execute_sql(const std::string& sql, DatabaseCallback callback) {
+  static std::mutex databaseLock{};
+  std::lock_guard<std::mutex> lock(databaseLock);
   char* zErrMsg{nullptr};
   sqlCallbacks_.emplace_back(callback);
+
   int rc = sqlite3_exec(db,sql.c_str(),Sqlite::sqlCallback, reinterpret_cast<void*>(sqlCallbacks_.size()-1), &zErrMsg);
-  //int rc = sqlite3_exec(db,sql.c_str(),Sqlite::sqlCallback, reinterpret_cast<void*>(callback), &zErrMsg);
-  if( rc != SQLITE_OK ){
-    std::cerr << "Can't execute command, error: " << zErrMsg;
-    sqlite3_free(zErrMsg);
-    return false;
-  }
-  return true;
-}
-bool Sqlite::execute_sql(std::string& sql, sqlite3_callback callback, void* data) {
-  char* zErrMsg{nullptr};
-  int rc = sqlite3_exec(db,sql.c_str(),callback, data, &zErrMsg);
   if( rc != SQLITE_OK ){
     std::cerr << "Can't execute command, error: " << zErrMsg;
     sqlite3_free(zErrMsg);

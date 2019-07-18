@@ -18,7 +18,6 @@ class Sqlite {
     bool select(std::string sql, DatabaseCallback callback);
   private:
       static int sqlCallback(void *data, int argc, char **argv, char **azColName);
-    bool execute_sql(std::string& sql, sqlite3_callback callback=nullptr, void* data=nullptr);
     bool execute_sql(std::string& sql, DatabaseCallback& callback);
     sqlite3 *db;
     static std::vector<DatabaseCallback> sqlCallbacks_;
