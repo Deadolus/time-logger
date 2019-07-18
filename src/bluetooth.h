@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
-#include <string>
-class Bluetooth {
+#include "scanner.h"
+
+class Bluetooth : public Scanner {
   public:
-    std::vector<std::pair<std::string, std::string>> scan(void);
+    DeviceList scan(void) override;
 };
