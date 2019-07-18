@@ -27,7 +27,7 @@ bool Sqlite::execute_sql(const std::string& sql, DatabaseCallback callback) {
   return true;
 }
 
-bool Sqlite::open(std::string name) {
+bool Sqlite::open(const std::string name) {
   char *zErrMsg = 0;
   int rc;
 
@@ -40,8 +40,8 @@ bool Sqlite::open(std::string name) {
   return true;
 }
 
-bool Sqlite::init(std::string name) {
-  std::string sql = R"(
+bool Sqlite::init(const std::string name) {
+  const std::string sql = R"(
 CREATE TABLE IF NOT EXISTS devicelog (
  id INTEGER PRIMARY KEY AUTOINCREMENT,
  timestamp  DATETIME default current_timestamp,
@@ -57,7 +57,7 @@ bool Sqlite::close() {
   return true;
 }
 
-bool Sqlite::insert(std::vector<std::string> data) {
+bool Sqlite::insert(const std::vector<std::string> data) {
   std::stringstream sql;
   sql <<  " INSERT INTO devicelog (device, deviceName)"
     << "VALUES ('" << data[0] <<"', '"<< data[1] <<"')"
@@ -66,11 +66,11 @@ bool Sqlite::insert(std::vector<std::string> data) {
   return execute_sql(sqlstr);
 }
 
-bool Sqlite::select(std::string sql, DatabaseCallback callback) {
+bool Sqlite::select(const std::string sql, DatabaseCallback callback) {
   return execute_sql(sql, callback);
 }
 
-bool Sqlite::executeSql(std::string& string) {
+bool Sqlite::executeSql(const std::string& string) {
   return execute_sql(string);
 }
 
