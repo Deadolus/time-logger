@@ -88,5 +88,5 @@ FetchContent_Declare(
 FetchContent_GetProperties(pstreams)
 if(NOT pstreams_POPULATED)
   FetchContent_Populate(pstreams)
-  include_directories(${pstreams_SOURCE_DIR})
 endif()
+include_directories(${pstreams_SOURCE_DIR})
