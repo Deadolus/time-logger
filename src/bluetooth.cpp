@@ -42,8 +42,6 @@ std::vector<std::pair<std::string, std::string>> Bluetooth::scan(void)
             name, 0) < 0)
         strcpy(name, "[unknown]");
         devices.push_back(std::make_pair<std::string, std::string>(addr, name));
-        //printf("%s  %s\n", addr, name);
-
     }
 
     free( ii );
