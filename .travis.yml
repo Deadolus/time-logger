@@ -3,7 +3,7 @@ language: cpp
 addons:
   apt:
     packages:
-      -cppcheck
+      - cppcheck
 install:
   - sudo apt -y install libbluetooth3 libbluetooth-dev libsqlite3-0 libsqlite3-dev
 script:
