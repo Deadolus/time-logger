@@ -62,7 +62,7 @@ TEST_F(SqliteTest, count_is_correct_after_insert)
   std::vector<std::string> value{"00x00", "device"};
   std::string sql = "SELECT * FROM devicelog;";
   DatabaseCallback cb = [](std::vector<DatabaseEntry>& entries){
-    EXPECT_EQ(entries.size(), 4);
+    EXPECT_EQ(entries.size(), 4ul);
   };
   EXPECT_TRUE(sqlite.init());
   EXPECT_TRUE(sqlite.insert(value));
