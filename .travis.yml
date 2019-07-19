@@ -1,7 +1,11 @@
 dist: xenial
 language: cpp
+addons:
+  apt:
+    packages:
+      -cppcheck
 install:
-  - sudo apt -y install libbluetooth3 libbluetooth-dev libsqlite3-0 libsqlite3-dev cppcheck
+  - sudo apt -y install libbluetooth3 libbluetooth-dev libsqlite3-0 libsqlite3-dev
 script:
   - mkdir build
   - cd build
