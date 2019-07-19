@@ -1,4 +1,4 @@
-#include "bluetooth.h"
+#include "bluetoothScanner.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +11,7 @@
 #include <string>
 #include <array>
 
-std::vector<std::pair<std::string, std::string>> Bluetooth::scan(void)
+std::vector<std::pair<std::string, std::string>> BluetoothScanner::scan(void)
 {
   constexpr int max_rsp = 255;
   constexpr int len = 8;
