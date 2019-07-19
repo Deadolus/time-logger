@@ -1,28 +1,30 @@
 #include "sqlite.h"
-#include "bluetooth.h"
-#include "ping.h"
+#include "bluetoothScanner.h"
+#include "pingScanner.h"
 
 #include <iostream>
+#include <thread>
 
 int main(void)
 {
   Sqlite sqlite;
   sqlite.open();
   sqlite.init();
-  Bluetooth bluetooth;
-  Pinger pinger;
-  auto devices = bluetooth.scan();
-  for(auto& device : devices) {
+  BluetoothScanner bluetooth;
+  PingScanner pinger;
 
-    std::cout << device.first << "," << device.second << std::endl;
-    sqlite.insert({device.first, device.second});
-  }
-  devices = pinger.scan();
+  auto scanService = [](Scanner& scanner, Writer& writer){
+  auto devices = scanner.scan();
   for(auto& device : devices) {
-
     std::cout << device.first << "," << device.second << std::endl;
-    sqlite.insert({device.first, device.second});
+    writer.write(device);
   }
+  };
+
+  std::thread bluetoothThread (scanService, std::ref(bluetooth), std::ref(sqlite));
+  std::thread pingThread (scanService, std::ref(pinger), std::ref(sqlite));
+  bluetoothThread.join();
+  pingThread.join();
 
   sqlite.close();
   return 0;

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(time-logger)
 file(GLOB SRC_FILES *.cpp)
 add_executable (${PROJECT_NAME} ${SRC_FILES} )
-target_link_libraries(${PROJECT_NAME} sqlite3 bluetooth fmt)
+target_link_libraries(${PROJECT_NAME} sqlite3 bluetooth fmt pthread)
 add_custom_target(run COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
 
 #-------------------------------------------
