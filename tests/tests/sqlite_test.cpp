@@ -3,21 +3,20 @@
 
 #include <string>
 #include <cstdio>
+#include <filesystem>
+#include <fstream>
 
 namespace {
   class UniqueDatabase {
     public:
       UniqueDatabase() {
-        int i{0};
-        std::string name{};
-        std::array<char, L_tmpnam> tempName;
-        tmpnam(tempName.data());
-        name = std::string(tempName.data()) +std::string(".db");
-        name_ = name;
-        std::cout << "My new database name:" << name_ << std::endl;
+        name_ = std::tmpnam(nullptr) +std::string(".db");
+        std::cout << "My new database name: " << name_ << std::endl;
       }
-      ~UniqueDatabase() {system(std::string("rm ").append(name_).c_str());}
-      std::string getName() { return name_;}
+      ~UniqueDatabase() {
+        std::remove(name_.c_str());
+      }
+      const std::string getName() { return name_;}
     private:
       std::string name_;
   };
