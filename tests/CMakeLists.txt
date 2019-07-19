@@ -44,6 +44,30 @@ target_link_libraries(${PROJECT_NAME} gtest gtest_main gcov sqlite3 bluetooth fm
 
 gtest_discover_tests(${PROJECT_NAME})
 
+set(CMAKE_PARAMETERS
+        --enable=warning,portability,information,missingInclude
+        --std=c++11
+        --template=\"[{severity}][{id}] {message} {callstack} \(On
+        {file}:{line}\)\"
+        --error-exitcode=1
+        --inline-suppr
+        --verbose
+        --suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt
+        -I${CMAKE_CURRENT_SOURCE_DIR}/../src
+        -I${CMAKE_BINARY_DIR}/_deps/googletest-src/googletest/include
+        -I${CMAKE_BINARY_DIR}/_deps/pstreams-src
+        -I${CMAKE_BINARY_DIR}/_deps/fmtlib-src/include
+        -j 4
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src
+)
+add_custom_target(
+        cppcheck
+        COMMAND /usr/bin/cppcheck
+        ${CMAKE_PARAMETERS}
+)
+add_test(NAME cppcheck COMMAND
+  cppcheck ${CMAKE_PARAMETERS})
+add_dependencies(${PROJECT_NAME} cppcheck)
 
 #-------------------------------------------
 
