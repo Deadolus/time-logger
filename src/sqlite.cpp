@@ -29,14 +29,14 @@ bool Sqlite::execute_sql(const std::string &sql, DatabaseCallback callback) {
 }
 
 bool Sqlite::open(const std::string name) {
-  char *zErrMsg = 0;
-  int rc;
+  int rc{};
 
   databaseName_ = name;
   rc = sqlite3_open(name.c_str(), &db);
 
   if (rc) {
-    std::cerr << "Can't open database with name" << name << ": " << zErrMsg;
+    std::cerr << "Can't open database with name" << name << ": "
+              << sqlite3_errmsg(db);
     return false;
   }
   return true;
