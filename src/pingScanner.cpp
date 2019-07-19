@@ -1,4 +1,4 @@
-#include "ping.h"
+#include "pingScanner.h"
 #include "fmt/format.h"
 #include "pstream.h"
 
@@ -7,10 +7,11 @@
 #include <algorithm>
 
 namespace {
-const std::string command = "nmap -v -sn 192.168.1.1/24 --open -oG - | grep Host | awk '{ print $2,$3 }'";
-}
+  const std::string ipRange = "192.168.1.1/24";
+  const std::string command = "nmap -v -sn "+ ipRange +" --open -oG - | grep Host | awk '{ print $2,$3 }'";
+} //end of anonymous namespace
 
-DeviceList Pinger::scan(void) {
+DeviceList PingScanner::scan(void) {
   DeviceList devices;
   auto cleanUpName = [](std::string& name){
       name.erase (std::remove(name.begin(), name.end(), '('), name.end());

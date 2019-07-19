@@ -2,7 +2,7 @@
 
 #include "scanner.h"
 
-class Pinger : public Scanner {
+class PingScanner : public Scanner {
   public:
     DeviceList scan(void) override;
 };
