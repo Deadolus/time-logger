@@ -10,3 +10,11 @@ enable_testing()
 
 add_subdirectory(src)
 add_subdirectory(tests)
+
+message("dir: ${CMAKE_CURRENT_SOURCE_DIR}")
+add_custom_target(
+        format
+        COMMAND /usr/bin/clang-format
+        -i ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/tests/*.cpp
+)
