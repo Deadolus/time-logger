@@ -16,11 +16,11 @@ std::vector<std::pair<std::string, std::string>> BluetoothScanner::scan(void) {
   constexpr int len = 8;
   constexpr int flags = IREQ_CACHE_FLUSH;
   unsigned int num_rsp{};
-  int dev_id;
-  int sock;
+  int dev_id{};
+  int sock{};
   std::array<inquiry_info, max_rsp> ii2{};
   inquiry_info *ii = ii2.data(); // ugly
-  std::vector<std::pair<std::string, std::string>> devices;
+  std::vector<std::pair<std::string, std::string>> devices{};
 
   dev_id = hci_get_route(nullptr);
   sock = hci_open_dev(dev_id);
