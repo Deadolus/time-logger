@@ -3,8 +3,6 @@
 
 #include <string>
 #include <cstdio>
-#include <filesystem>
-#include <fstream>
 
 namespace {
   class UniqueDatabase {
