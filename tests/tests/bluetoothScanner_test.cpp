@@ -1,17 +1,17 @@
 #include "gtest/gtest.h"
-#include "bluetooth.h"
+#include "bluetoothScanner.h"
 
 #include <string>
 
 class BluetoothTest : public ::testing::Test
 {
     protected:
-      Bluetooth scanner{};
+      BluetoothScanner scanner{};
 };
 
 TEST(BluetoothSimpleTest, can_execute_scan)
 {
-  Bluetooth scanner{};
+  BluetoothScanner scanner{};
   EXPECT_GE(scanner.scan().size(), 0);
 }
 
