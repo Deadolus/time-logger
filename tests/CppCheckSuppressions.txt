@@ -2,4 +2,5 @@ ConfigurationNotChecked:*
 missingIncludeSystem:*
 unmatchedSuppression:*
 toomanyconfigs:*
+purgedConfiguration:*
 *:*_deps*
