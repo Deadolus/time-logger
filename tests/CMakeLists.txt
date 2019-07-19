@@ -31,8 +31,8 @@ include_directories(${GTEST_INCLUDE_DIRS} ${COMMON_INCLUDES} ${TEST_INCLUDES})
 
 file(GLOB SRC_FILES
   ../src/sqlite.cpp
-  ../src/ping.cpp
-  ../src/bluetooth.cpp
+  ../src/pingScanner.cpp
+  ../src/bluetoothScanner.cpp
   )
 file(GLOB TEST_SRC_FILES
 ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp
