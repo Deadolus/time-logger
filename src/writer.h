@@ -5,6 +5,6 @@
 typedef std::pair<std::string, std::string> DeviceEntry;
 
 class Writer {
-  public:
-    virtual bool write(const DeviceEntry entry) = 0;
-    };
+public:
+  virtual bool write(const DeviceEntry entry) = 0;
+};

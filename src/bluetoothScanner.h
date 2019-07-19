@@ -3,6 +3,6 @@
 #include "scanner.h"
 
 class BluetoothScanner : public Scanner {
-  public:
-    DeviceList scan(void) override;
+public:
+  DeviceList scan(void) override;
 };
