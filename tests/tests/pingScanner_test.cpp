@@ -1,17 +1,17 @@
 #include "gtest/gtest.h"
-#include "ping.h"
+#include "pingScanner.h"
 
 #include <string>
 
 class PingerTest : public ::testing::Test
 {
     protected:
-      Pinger scanner{};
+      PingScanner scanner{};
 };
 
 TEST(SimplePingerTest, can_execute_scan)
 {
-  Pinger scanner{};
+  PingScanner scanner{};
   EXPECT_GE(scanner.scan().size(), 0);
 }
 
