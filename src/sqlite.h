@@ -1,5 +1,7 @@
 #pragma once
 
+#include "writer.h"
+
 #include <string>
 #include <vector>
 #include <functional>
@@ -8,8 +10,9 @@
 typedef std::pair<std::string, std::string> DatabaseEntry;
 typedef std::function<void(std::vector<DatabaseEntry>&)> DatabaseCallback;
 
-class Sqlite {
+class Sqlite : public Writer {
   public:
+    bool write(const DeviceEntry entry) override;
     bool open(const std::string name="database.db");
     bool init(const std::string name="database.db");
     bool close();

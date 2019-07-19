@@ -56,13 +56,23 @@ bool Sqlite::close() {
   return true;
 }
 
-bool Sqlite::insert(const std::vector<std::string> data) {
+bool Sqlite::write(const DeviceEntry entry) {
   std::stringstream sql;
   sql <<  " INSERT INTO devicelog (device, deviceName)"
-    << "VALUES ('" << data[0] <<"', '"<< data[1] <<"')"
+    << "VALUES ('" << entry.first <<"', '"<< entry.second <<"')"
     << ";";
   std::string  sqlstr = sql.str();
   return execute_sql(sqlstr);
+}
+bool Sqlite::insert(const std::vector<std::string> data) {
+  if(data.size() % 2 != 0) return false;
+
+  for(auto entry = data.begin(); entry != data.end(); entry+=2){
+      if(!write(std::make_pair(*entry, *std::next(entry))))
+        return false;
+      }
+
+  return true;
 }
 
 bool Sqlite::select(const std::string sql, DatabaseCallback callback) {
