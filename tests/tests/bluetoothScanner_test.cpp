@@ -3,13 +3,13 @@
 
 #include <string>
 
-class BluetoothTest : public ::testing::Test
+class BluetoothScannerTest : public ::testing::Test
 {
     protected:
       BluetoothScanner scanner{};
 };
 
-TEST(BluetoothSimpleTest, can_execute_scan)
+TEST(BluetoothScannerSimpleTest, can_execute_scan)
 {
   BluetoothScanner scanner{};
   EXPECT_GE(scanner.scan().size(), 0);
