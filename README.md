@@ -1,9 +1,9 @@
+[![Build Status](https://travis-ci.com/Deadolus/time-logger.svg?token=poxpihu9457b2ZrAvsoK&branch=master)](https://travis-ci.com/Deadolus/time-logger)
 # time-logger
 A time-logger, scanning for devices and adding entries of them to a database
 
 At the moment this is more of a proof-of-concept than a fully fledged program.
 
-[![Build Status](https://travis-ci.com/Deadolus/time-logger.svg?token=poxpihu9457b2ZrAvsoK&branch=master)](https://travis-ci.com/Deadolus/time-logger)
 
 
 # Usage
