@@ -45,11 +45,10 @@ target_link_libraries(${PROJECT_NAME} gtest gtest_main gcov sqlite3 bluetooth fm
 
 gtest_discover_tests(${PROJECT_NAME})
 
-set(CMAKE_PARAMETERS
+set(CPPCHECK_PARAMETERS
         --enable=warning,portability,information,missingInclude
         --std=c++11
-        --template=\"[{severity}][{id}] {message} {callstack} \(On
-        {file}:{line}\)\"
+        --template=\"[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)\"
         --error-exitcode=1
         --inline-suppr
         --verbose
@@ -61,10 +60,10 @@ set(CMAKE_PARAMETERS
 add_custom_target(
         cppcheck
         COMMAND /usr/bin/cppcheck
-        ${CMAKE_PARAMETERS}
+        ${CPPCHECK_PARAMETERS}
 )
 add_test(NAME cppcheck COMMAND
-  cppcheck ${CMAKE_PARAMETERS})
+  cppcheck ${CPPCHECK_PARAMETERS})
 add_dependencies(${PROJECT_NAME} cppcheck)
 
 file(RELATIVE_PATH RELATIVE_SOURCEDIR ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src/)
