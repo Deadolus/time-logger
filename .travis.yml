@@ -1,13 +1,5 @@
 dist: bionic
 language: cpp
-addons:
-  apt:
-    packages:
-      - cppcheck
-      - libbluetooth3
-      - libbluetooth-dev
-      - libsqlite3-0
-      - libsqlite3-dev
 before_install:
   - sudo apt-get install -y cppcheck libbluetooth3 libbluetooth-dev libsqlite3-0 libsqlite3-dev
 script:
