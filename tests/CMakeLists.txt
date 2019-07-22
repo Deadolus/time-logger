@@ -54,9 +54,6 @@ set(CMAKE_PARAMETERS
         --verbose
         --suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/CppCheckSuppressions.txt
         -I${CMAKE_CURRENT_SOURCE_DIR}/../src
-        -I${CMAKE_BINARY_DIR}/_deps/googletest-src/googletest/include
-        -I${CMAKE_BINARY_DIR}/_deps/pstreams-src
-        -I${CMAKE_BINARY_DIR}/_deps/fmtlib-src/include
         -j 4
         ${CMAKE_CURRENT_SOURCE_DIR}/../src
 )
