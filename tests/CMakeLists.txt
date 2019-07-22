@@ -29,6 +29,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/helpers
 
 include_directories(${GTEST_INCLUDE_DIRS} ${COMMON_INCLUDES} ${TEST_INCLUDES})
 
+file(GLOB HEADER_FILES ../src/*.h)
 file(GLOB SRC_FILES
   ../src/sqlite.cpp
   ../src/pingScanner.cpp
@@ -65,6 +66,16 @@ add_custom_target(
 add_test(NAME cppcheck COMMAND
   cppcheck ${CMAKE_PARAMETERS})
 add_dependencies(${PROJECT_NAME} cppcheck)
+
+file(RELATIVE_PATH RELATIVE_SOURCEDIR ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src/)
+set(CLANG-TIDY_PARAMETERS
+  -p ${RELATIVE_SOURCEDIR}
+  ${HEADER_FILES}
+  ${SRC_FILES}
+  )
+add_test(NAME clang-tidy COMMAND
+  clang-tidy ${CLANG-TIDY_PARAMETERS}
+  )
 
 #-------------------------------------------
 
