@@ -39,7 +39,7 @@ std::vector<std::pair<std::string, std::string>> BluetoothScanner::scan(void) {
     ba2str(&(ii + i)->bdaddr, addr.data());
     if (hci_read_remote_name(sock, &(ii + i)->bdaddr, sizeof(name), name.data(),
                              0) < 0)
-      strcpy(name.data(), "[unknown]");
+      strncpy(name.data(), "[unknown]", name.size());
     devices.push_back(
         std::make_pair<std::string, std::string>(addr.data(), name.data()));
   }
