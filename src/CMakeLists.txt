@@ -4,6 +4,9 @@ file(GLOB SRC_FILES *.cpp)
 add_executable (${PROJECT_NAME} ${SRC_FILES} )
 target_link_libraries(${PROJECT_NAME} sqlite3 bluetooth fmt pthread)
 add_custom_target(run COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME}
+	RUNTIME DESTINATION /usr/local/bin/
+	)
 
 #-------------------------------------------
 
